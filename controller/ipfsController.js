@@ -55,6 +55,10 @@ export async function uploadMetadataController(req, res) {
 
 
 function changeExtension(filename, extension) {
+    if (!filename){
+        return `file_${Date.now()}.${extension}`;
+    }
+    
     const name = filename.split(".");
     name.pop();
     name.push(extension)
