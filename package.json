@@ -1,8 +1,8 @@
 {
-  "name": "ipfs-pinata-backend",
+  "name": "pinata-ipfs-backend",
   "version": "1.0.0",
   "description": "A simple backend to pin files to IPFS using Pinata",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
