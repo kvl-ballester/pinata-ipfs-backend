@@ -7,13 +7,12 @@ const pinata = new PinataSDK({
     pinataJwt: process.env.PINATA_JWT,
     pinataGateway: process.env.PINATA_GATEWAY
 });
-  
 
-export default async function uploadImageController(req, res) {
+export async function uploadImageController(req, res) {
     try {
         if (req.file){
             const cid = await uploadImageFileToIPFS(req.file);
-            res.status(200).send(cid);
+            res.send(cid);
 
         } else {
             res.status(400).send('No file uploaded');
@@ -30,7 +29,42 @@ export default async function uploadImageController(req, res) {
 }
 
 
- async function uploadImageFileToIPFS(imageFile) {
+export async function uploadMetadataController(req, res) {
+    const data = req.body;
+
+    try {
+        const filename = changeExtension(data.name, "json");
+
+        const json_uploaded = await pinata.upload
+        .json(data)
+        .addMetadata({
+            name: filename
+        })
+
+        await addToIpfsGroup(json_uploaded.IpfsHash);
+        
+        console.log(json_uploaded);
+        res.send(json_uploaded.IpfsHash);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error.message);
+    }
+
+}
+
+
+function changeExtension(filename, extension) {
+    const name = filename.split(".");
+    name.pop();
+    name.push(extension)
+
+    return name.join(".");
+    
+}
+
+
+async function uploadImageFileToIPFS(imageFile) {
 
     const file = new File([imageFile.buffer], imageFile.originalname, { type: imageFile.mimetype });
     const image_uploaded = await pinata.upload.file(file);
@@ -46,5 +80,3 @@ async function addToIpfsGroup(cid) {
         cids: [cid]
     });
 }
-
-

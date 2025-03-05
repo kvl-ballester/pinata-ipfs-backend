@@ -1,7 +1,6 @@
 import express from 'express'
 import multer from "multer";
-import uploadImageController from './controller/imageController.js'
-import uploadMetadataController from './controller/jsonController.js'
+import { uploadImageController, uploadMetadataController } from './controller/ipfsController.js'
 import dotenv from "dotenv";
 
 dotenv.config();
