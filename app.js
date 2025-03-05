@@ -1,7 +1,7 @@
 import express from 'express'
 import multer from "multer";
 import uploadImageController from './controller/imageController.js'
-import uploadJsonController from './controller/jsonController.js'
+import uploadMetadataController from './controller/jsonController.js'
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -17,7 +17,7 @@ const upload = multer({ storage });
 
 app.post('/image', upload.single("image"), uploadImageController)
 
-app.post('/json', uploadJsonController)
+app.post('/metadata', uploadMetadataController)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
